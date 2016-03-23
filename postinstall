@@ -1,0 +1,147 @@
+#!/bin/bash
+
+# Remove puppet_bootstrap config
+	echo 'Removing old Puppet Installation'
+	/bin/rm -Rf "/var/lib/puppet"
+	/bin/rm -Rf "/etc/puppet"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/hiera/backend/puppet_backend.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/hiera/scope.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/hiera_puppet.rb"
+	/bin/rm -Rf "/usr/lib/ruby/site_ruby/1.8/puppet"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/puppet.rb"
+	/bin/rm -Rf "/usr/lib/ruby/site_ruby/1.8/puppetx"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/puppetx.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/1.8/semver.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/hiera/backend/puppet_backend.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/hiera/scope.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/hiera_puppet.rb"
+	/bin/rm -Rf "/usr/lib/ruby/site_ruby/puppet"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/puppet.rb"
+	/bin/rm -Rf "/usr/lib/ruby/site_ruby/puppetx"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/puppetx.rb"
+	/bin/rm -f "/usr/lib/ruby/site_ruby/semver.rb"
+
+	# remove bin files
+	/bin/rm -f "/usr/bin/extlookup2hiera"
+	/bin/rm -f "/usr/bin/puppet"
+
+	# remove old doc files
+	/bin/rm -rf "/usr/share/doc/puppet"
+
+	# These files used to live in the sbindir but were
+	# removed in Pupppet >= 3.0. Remove them
+	/bin/rm -f "/usr/sbin/puppetca"
+	/bin/rm -f "/usr/sbin/puppetd"
+	/bin/rm -f "/usr/sbin/puppetmasterd"
+	/bin/rm -f "/usr/sbin/puppetqd"
+	/bin/rm -f "/usr/sbin/puppetrun"
+
+	# Clean up a little
+	echo "Cleaning up..."
+	/bin/rm "/Library/LaunchDaemons/com.grahamgilbert.puppet_bootstrap.plist"
+	/bin/rm "/Library/LaunchAgents/se.gu.it.LoginLog.plist"
+	/bin/rm -rf "/usr/local/puppet_bootstrap"
+	/bin/rm "/Library/PrivilegedHelperTools/LoginLog.app"
+
+# Remove-munki
+	/bin/launchctl unload /Library/LaunchDaemons/com.googlecode.munki.*
+
+	if [[ -e "/Applications/Utilities/Managed Software Update.app" ]]; then
+		/bin/rm -rf "/Applications/Utilities/Managed Software Update.app"
+	fi
+	#Munki 2 only:
+	if [[ -e "/Applications/Managed Software Center.app" ]]; then
+		/bin/rm -rf "/Applications/Managed Software Center.app"
+	fi
+
+	/bin/rm -f /Library/LaunchDaemons/com.googlecode.munki.*
+	/bin/rm -f /Library/LaunchAgents/com.googlecode.munki.*
+	/bin/rm -rf "/Library/Managed Installs"
+	/bin/rm -rf /usr/local/munki
+	/bin/rm /etc/paths.d/munki
+
+	/usr/sbin/pkgutil --forget com.googlecode.munki.admin
+	/usr/sbin/pkgutil --forget com.googlecode.munki.app
+	/usr/sbin/pkgutil --forget com.googlecode.munki.core
+	/usr/sbin/pkgutil --forget com.googlecode.munki.launchd
+
+	# reset App Store to pull updates from default Apple servers
+	/usr/bin/defaults delete /Library/Preferences/com.apple.SoftwareUpdate CatalogURL
+
+# Remove-standalonePuppet
+	/bin/rm -rf /usr/bin/puppet
+	/bin/rm -rf /etc/puppet
+	/bin/rm -rf /private/etc/puppet
+	/bin/rm -rf /usr/share/doc/puppet
+	/bin/rm -rf /private/var/lib/puppet
+	/bin/rm -rf /private/var/log/puppet
+	/bin/rm -rf /Library/Ruby/Site/puppet
+	/bin/rm -rf	/Library/Management/Puppet
+	/bin/rm -rf /Library/Ruby/Site/puppet.rb
+	/bin/rm -rf /Library/Ruby/Site/puppetx
+	/bin/rm -rf /Library/Ruby/Site/puppetx.rb
+	/bin/rm -rf	/private/var/db/.puppet_pkgdmg_installed_munki_tools2
+	/bin/rm -rf /private/var/db/dslocal/nodes/Default/groups/puppet.plist
+	/bin/rm -rf /private/var/db/dslocal/nodes/Default/users/puppet.plist
+	/bin/rm -rf	/private/var/db/receipts/com.puppetlabs.*
+	/bin/rm -rf /private/var/log/puppet_run.log
+	/bin/rm -rf /usr/share/man/man5/puppet.*
+	/bin/rm -rf /usr/share/man/man8/puppet.*
+
+	/usr/sbin/pkgutil --forget com.puppetlabs.*
+
+# Remove-facter
+	/bin/rm -rf /usr/bin/facter
+	/bin/rm -rf /etc/facter
+	/bin/rm -rf /etc/facter.conf
+	/bin/rm -rf /usr/share/doc/facter
+	/bin/rm -rf /Library/Ruby/Site/facter.*
+	/bin/rm -rf /private/var/lib/facter
+	/bin/rm -rf /private/var/db/receipts/com.puppetlabs.facter*
+	/bin/rm -rf /usr/share/man/man8/facter.8
+
+# Remove-hiera
+	/bin/rm -rf /usr/bin/hiera
+	/bin/rm -rf /etc/hiera.yaml
+	/bin/rm -rf /usr/share/doc/hiera
+	/bin/rm -rf /Library/Ruby/Site/hiera
+	/bin/rm -rf /private/var/lib/hiera
+	/bin/rm -rf /usr/bin/extlookup2hiera
+	/bin/rm -rf /usr/share/man/man8/extlookup2hiera.8
+	/bin/rm -rf	/Library/Ruby/Site/hiera_puppet.rb
+	/bin/rm -rf /Library/Ruby/Site/hiera.rb
+
+# Remove pebble bits
+	/bin/rm -rf /Library/LaunchDaemons/com.googlecode.pymacadmin.crankd.plist
+	/bin/rm -rf /Library/LaunchAgents/com.grahamgilbert.*
+	/bin/rm -rf /Library/Application\ Support/crankd
+	/bin/rm -rf /Library/Preferences/com.apple.SoftwareUpdate.plist
+	/bin/rm -rf /Library/Preferences/com.salsoftware.*
+	/bin/rm -rf /Library/Preferences/com.salopensource.*
+	/bin/rm -rf /Library/Management
+
+# Remove profiles
+	/usr/bin/profiles -D
+
+# Remove outset
+	/bin/rm -rf /usr/local/outset
+	/bin/launchctl unload /Library/LaunchDaemons/com.github.outset.*
+	/bin/rm -f /Library/LaunchDaemons/com.github.outset.*
+	/bin/rm -f /var/log/outset.log
+
+# Pebble User and puppet
+	/usr/bin/dscl . -delete /Users/puppet
+
+# Remove receipts
+	echo "Removing receipts..."
+	/bin/rm -f /var/db/receipts/com.grahamgilbert.*
+	/bin/rm -f /var/db/receipts/com.salsoftware.*
+	/bin/rm -f /var/db/receipts/com.salopensource.*
+
+# Remove macnamer
+	/bin/rm -rf /usr/local/macnamer
+
+# Remove SAL+
+	/bin/rm -rf /usr/local/sal
+
+exit 0
