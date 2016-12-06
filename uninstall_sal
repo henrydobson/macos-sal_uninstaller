@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 # Remove puppet_bootstrap config
 echo 'Removing old Puppet Installation'
 /bin/rm -Rf "/var/lib/puppet"
@@ -122,7 +127,7 @@ fi
 /bin/rm -rf /Library/Management
 
 # Remove profiles
-echo yes | /usr/bin/profiles -D
+/usr/bin/profiles -D
 
 # Remove outset
 /bin/rm -rf /usr/local/outset
